@@ -1,37 +1,81 @@
-# AI Buddy
+# Trading Bot v3 Distribution Setup Guide
 
-This directory contains the AI Buddy service used by the Clawbot project.
+This folder contains deployable artifacts for Trading Bot v3.
 
-## Overview
+## Folder Layout
 
-AI Buddy interacts with various messaging platforms and provides AI-driven responses. It maintains state in the `state/` directory and logs activity to `logs/log.txt`.
+- `windows/trading-bot-v3.exe` -> Windows binary
+- `raspi/trading-bot-v3` -> Linux/Raspberry Pi binary
+- `web/index.php` -> optional simple web UI/view
+- `.env.example` -> environment template for bot runtime
 
-## Setup
+## 1) Prepare Environment File
 
-1. Copy `.env.example` to `.env` and populate environment variables.
-2. Ensure clawbot-api.exe and configured if building any components.
-3. Run the service with the appropriate command (e.g. `.\clawbot-api.exe` or via existing scripts).
+Create a `.env` file in the same working directory where you run the bot binary.
 
-## CLI
+### Windows (PowerShell)
 
-The project provides a command-line interface. Use:
+```powershell
+Copy-Item .env.example .env
+```
 
-.\clawbotctl.exe
-usage: clawbotctl <approve|send> [flags]
-  approve --channel=telegram [--chat-id ID | --code CODE] [--api URL]
-  send    --channel=whatsapp --to=NUMBER --message=TEXT [--api URL]     
+### Linux / Raspberry Pi
 
-## Directories
+```bash
+cp .env.example .env
+```
 
-- `logs/` - contains runtime logs.
-- `state/` - persistent state such as memory or session data.
+Then edit `.env` and fill secret values:
 
-## Distribution
+- `INDODAX_API_KEY`
+- `INDODAX_API_SECRET`
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHAT_ID`
+- `TRADING_TELEGRAM_BOT_SECRET`
 
-You can download distribution archive here:
+## 2) Database Setup
 
-git clone https://github.com/jonipwi/mimic-clawbot.git
+The bot expects MySQL and a DSN in `TRADING_DB_DSN`, for example:
 
-## Contributing
+```env
+TRADING_DB_DSN=root:root@tcp(localhost:3306)/trading_db_v3?parseTime=true&charset=utf8mb4
+```
 
-See the top-level repository README for contribution guidelines.
+Ensure:
+
+- MySQL is running
+- Database `trading_db_v3` exists
+- User credentials in DSN are valid
+
+## 3) Run on Windows
+
+```powershell
+cd windows
+./trading-bot-v3.exe
+```
+
+## 4) Run on Raspberry Pi / Linux
+
+```bash
+cd raspi
+chmod +x trading-bot-v3
+./trading-bot-v3
+```
+
+## 5) Optional Web File
+
+`web/index.php` can be served with your PHP/Nginx/Apache stack if needed.
+
+## 6) Safety Notes
+
+- Keep `LIVE_TRADING_ENABLED=false` for paper mode.
+- Enable live mode only after API keys and risk limits are verified.
+- Never commit real `.env` values to git.
+
+## 7) Quick Checklist
+
+- `.env` created from `.env.example`
+- MySQL reachable by `TRADING_DB_DSN`
+- Pair list and allocation values adjusted
+- Telegram settings verified (optional)
+- Bot starts without config errors
