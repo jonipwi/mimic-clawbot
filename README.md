@@ -28,9 +28,9 @@ usage: clawbotctl <approve|send> [flags]
 
 ## Distribution
 
-You can download a pre-built distribution archive here:
+You can download distribution archive here:
 
-https://dev.benwinindonesia.com/ai-buddy.7z
+git clone https://github.com/jonipwi/mimic-clawbot.git
 
 ## Contributing
 
