@@ -103,6 +103,36 @@ Edit `.env` and fill in your credentials:
 - `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID`
 - `TRADING_DB_DSN` (MySQL connection string)
 
+> ⚠️ **Important — Every person's `.env` is different.**
+> The parameters inside `.env` depend on your own server, your own MySQL credentials, your own Telegram bot, and your own trading preferences.
+> **Do not copy someone else's `.env` directly** — it will not work on your machine.
+
+---
+
+### Step 4c — Customize Your Trading Parameters
+
+The `.env` file also contains trading behavior parameters (e.g. buy/sell thresholds, risk limits, pair selection, allocation sizes). These are **personal** — there is no single correct value.
+
+**How to configure them:**
+
+1. Open your `.env` file and look for parameters like:
+   - `TRADING_PAIRS`, `BUY_THRESHOLD`, `SELL_THRESHOLD`
+   - `MAX_ALLOCATION`, `STOP_LOSS_PERCENT`, `TAKE_PROFIT_PERCENT`
+   - and others listed in `.env.example`
+
+2. Decide what **trading style** you want, for example:
+   - Aggressive (high frequency, higher risk)
+   - Conservative (fewer trades, tighter stop-loss)
+   - Scalping vs. swing trading
+
+3. Copy the parameter list from your `.env.example` and paste it into **ChatGPT** with a message like:
+
+   > _"Here are my trading bot parameters. I want a conservative trading style with low risk. Help me set the values."_
+
+   ChatGPT will suggest values based on your described style. Review them, adjust to your comfort, then paste them into your `.env`.
+
+> Tip: You can always come back and tune the values after observing the bot's behavior in paper trading mode (`LIVE_TRADING_ENABLED=false`).
+
 ---
 
 ### Step 4b — Set Up Telegram Bot Token & Channel
