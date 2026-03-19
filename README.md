@@ -131,11 +131,21 @@ The `.env` file also contains trading behavior parameters (e.g. buy/sell thresho
 
    ChatGPT will suggest values based on your described style. Review them, adjust to your comfort, then paste them into your `.env`.
 
+   > 🔒 **Security warning — before pasting to ChatGPT:**
+   > Use `.env.example` (which has no real secrets), **not** your actual `.env`.
+   > If you paste your real `.env`, **remove or blank out** all private values first:
+   > - `INDODAX_API_KEY`, `INDODAX_API_SECRET`
+   > - `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`
+   > - `TRADING_DB_DSN` (contains your DB password)
+   > - Any other keys, tokens, or passwords
+   >
+   > Only share the **parameter names** with placeholder values like `your-api-key-here`. Never share real credentials with any AI service or third party.
+
 > Tip: You can always come back and tune the values after observing the bot's behavior in paper trading mode (`LIVE_TRADING_ENABLED=false`).
 
 ---
 
-### Step 4b — Set Up Telegram Bot Token & Channel
+### Step 4a — Set Up Telegram Bot Token & Channel
 
 #### 1. Create a Telegram Bot
 
@@ -386,3 +396,45 @@ mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS trading_db_v3;"
 - Confirm `index.php` is placed at `C:\xampp\htdocs\index.php` (or `web\index.php` → `C:\xampp\htdocs\web\index.php`)
 - Check PHP error log: `C:\xampp\php\logs\php_error_log`
 - Try accessing directly: `http://localhost/index.php` or `http://localhost/web/index.php`
+
+---
+
+### ❌ Telegram bot not replying (bot found but no response)
+
+**Symptoms:**
+- You found the bot on Telegram (e.g. `@Dvd_open_trader_bot`)
+- You sent a message but the bot does not reply
+
+**Cause:** The bot binary (`trading-bot-v3.exe`) is not running yet.
+
+**Fix:**
+
+1. Make sure you have completed **Step 5** — Run the Bot:
+
+   ```powershell
+   # Windows
+   .\trading-setup.ps1 -StartBot
+   ```
+
+   ```bash
+   # Linux
+   ./trading-setup.sh --start-bot
+   ```
+
+2. After running, send `/start` to your bot on Telegram and wait a few seconds.
+
+3. If still no reply, check the bot logs for errors:
+
+   ```powershell
+   # Windows — view latest log
+   Get-Content logs\*.log -Tail 50
+   ```
+
+   ```bash
+   # Linux
+   tail -n 50 logs/*.log
+   ```
+
+   Look for lines containing `ERROR`, `FATAL`, or `panic` — these will show the exact reason the bot failed to start or respond.
+
+> Common causes found in logs: wrong `TELEGRAM_BOT_TOKEN`, bot not added to the chat, or database not reachable.
