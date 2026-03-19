@@ -296,3 +296,63 @@ chmod +x trading-bot-v3
 - Pair list and allocation values adjusted
 - Telegram settings verified (optional)
 - Bot starts without config errors
+
+---
+
+## 8) Troubleshooting
+
+### ❌ Fatal error: Access denied for user 'root'@'localhost' (using password: YES)
+
+**Error example:**
+```
+Fatal error: Uncaught mysqli_sql_exception: Access denied for user 'root'@'localhost' (using password: YES)
+in C:\xampp\htdocs\index.php on line 404
+```
+
+**Cause:** MySQL root user password is not set or doesn't match what's configured in the app.
+
+**Fix — Set MySQL root password to `root` via XAMPP:**
+
+1. Open **XAMPP Control Panel**
+2. Make sure **MySQL is running** (green status)
+3. Click **Shell** (or open a terminal and go to `C:\xampp\mysql\bin\`)
+4. Run the following commands:
+
+```bash
+# Enter MySQL as root (no password yet)
+mysql -u root
+
+# Inside MySQL shell — set the password to "root"
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+> If `mysql -u root` is denied, try:
+> ```bash
+> mysql -u root -p
+> ```
+> Then just press **Enter** (blank password) when prompted.
+
+5. After setting the password, verify your `.env` or DSN matches:
+
+```env
+TRADING_DB_DSN=root:root@tcp(localhost:3306)/trading_db_v3?parseTime=true&charset=utf8mb4
+```
+
+6. Also make sure the database exists:
+
+```bash
+mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS trading_db_v3;"
+```
+
+7. Restart Apache and MySQL from XAMPP Control Panel, then reload the dashboard.
+
+---
+
+### ❌ Dashboard not loading / blank page
+
+- Confirm Apache is **Started** (green) in XAMPP Control Panel
+- Confirm `index.php` is placed at `C:\xampp\htdocs\index.php` (or `web\index.php` → `C:\xampp\htdocs\web\index.php`)
+- Check PHP error log: `C:\xampp\php\logs\php_error_log`
+- Try accessing directly: `http://localhost/index.php` or `http://localhost/web/index.php`
