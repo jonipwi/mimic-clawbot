@@ -40,73 +40,7 @@ if ($StopAll) {
     exit 0
 }
 
-function Invoke-GoBuild {
-    param(
-        [Parameter(Mandatory = $true)][string]$GoOs,
-        [Parameter(Mandatory = $true)][string]$GoArch,
-        [Parameter(Mandatory = $true)][string]$Output,
-        [string]$Target = '.'
-    )
-
-    $prevGoOs = $env:GOOS
-    $prevGoArch = $env:GOARCH
-
-    try {
-        $env:GOOS = $GoOs
-        $env:GOARCH = $GoArch
-
-        Write-Host "Building $Output (GOOS=$GoOs GOARCH=$GoArch)..."
-        go build -o $Output $Target
-        if ($LASTEXITCODE -ne 0) {
-            throw "go build failed for $Output"
-        }
-    }
-    finally {
-        if ([string]::IsNullOrEmpty($prevGoOs)) {
-            Remove-Item Env:GOOS -ErrorAction SilentlyContinue
-        }
-        else {
-            $env:GOOS = $prevGoOs
-        }
-
-        if ([string]::IsNullOrEmpty($prevGoArch)) {
-            Remove-Item Env:GOARCH -ErrorAction SilentlyContinue
-        }
-        else {
-            $env:GOARCH = $prevGoArch
-        }
-    }
-}
-
-Write-Host 'Checking Go installation...'
-go version
-if ($LASTEXITCODE -ne 0) {
-    throw 'go version failed. Ensure Go is installed and in PATH.'
-}
-
-Write-Host 'Tidying go modules...'
-go mod tidy
-if ($LASTEXITCODE -ne 0) {
-    throw 'go mod tidy failed.'
-}
-
 Stop-TradingStack
-
-New-Item -ItemType Directory -Force -Path "$PSScriptRoot\linux" | Out-Null
-
-# Windows binaries
-Invoke-GoBuild -GoOs 'windows' -GoArch 'amd64' -Output '.\mimic-clawbot.exe'
-Invoke-GoBuild -GoOs 'windows' -GoArch 'amd64' -Output '.\mimic-bridge.exe' -Target '.\cmd\mimic-bridge'
-# Invoke-GoBuild -GoOs 'windows' -GoArch 'amd64' -Output '.\windows\trading-bot.exe'
-
-# Linux binaries
-Invoke-GoBuild -GoOs 'linux' -GoArch 'arm64' -Output '.\mimic-clawbot'
-Invoke-GoBuild -GoOs 'linux' -GoArch 'arm64' -Output '.\linux\mimic-bridge' -Target '.\cmd\mimic-bridge'
-# Invoke-GoBuild -GoOs 'linux' -GoArch 'arm64' -Output '.\linux\trading-bot'
-
-Write-Host ''
-Write-Host 'Build completed successfully.'
-# Write-Host 'Run Windows bot: .\windows\trading-bot.exe'
 
 Write-Host 'Starting Trading Web UI...'
 Start-Process -FilePath powershell.exe -ArgumentList '-NoProfile','-ExecutionPolicy','Bypass','-File',(Join-Path $PSScriptRoot 'start-web-ui.ps1') -WorkingDirectory $PSScriptRoot | Out-Null

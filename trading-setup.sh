@@ -104,41 +104,9 @@ if [[ "$STOP_ALL" -eq 1 ]]; then
 	exit 0
 fi
 
-echo "Checking Go installation..."
-go version
-
-echo "Tidying go modules..."
-go mod tidy
-
 stop_trading_stack
 
-mkdir -p "$SCRIPT_DIR/linux" "$SCRIPT_DIR/logs"
-
-HAS_BRIDGE_SOURCE=0
-if [[ -d "$SCRIPT_DIR/cmd/mimic-bridge" ]]; then
-	HAS_BRIDGE_SOURCE=1
-fi
-
-echo "Building ./mimic-clawbot.exe (GOOS=windows GOARCH=amd64)..."
-GOOS=windows GOARCH=amd64 go build -o ./mimic-clawbot.exe .
-
-if [[ "$HAS_BRIDGE_SOURCE" -eq 1 ]]; then
-	echo "Building ./mimic-bridge.exe (GOOS=windows GOARCH=amd64)..."
-	GOOS=windows GOARCH=amd64 go build -o ./mimic-bridge.exe ./cmd/mimic-bridge
-else
-	echo "Skipping bridge build: ./cmd/mimic-bridge not found in this project."
-fi
-
-echo "Building ./mimic-clawbot (GOOS=linux GOARCH=arm64)..."
-GOOS=linux GOARCH=arm64 go build -o ./mimic-clawbot .
-
-if [[ "$HAS_BRIDGE_SOURCE" -eq 1 ]]; then
-	echo "Building ./linux/mimic-bridge (GOOS=linux GOARCH=arm64)..."
-	GOOS=linux GOARCH=arm64 go build -o ./linux/mimic-bridge ./cmd/mimic-bridge
-fi
-
-echo
-echo "Build completed successfully."
+mkdir -p "$SCRIPT_DIR/logs"
 
 echo "Starting Trading Web UI..."
 if command -v php >/dev/null 2>&1; then
