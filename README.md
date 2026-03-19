@@ -105,6 +105,52 @@ Edit `.env` and fill in your credentials:
 
 ---
 
+### Step 4b — Set Up Telegram Bot Token & Channel
+
+#### 1. Create a Telegram Bot
+
+1. Open Telegram and search for **@BotFather**
+2. Start a chat and send `/newbot`
+3. Follow the prompts:
+   - Enter a **display name** (e.g. `My Trading Bot`)
+   - Enter a **username** ending in `bot` (e.g. `mytrading_bot`)
+4. BotFather will reply with your **bot token**, which looks like:
+   ```
+   123456789:AAFxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   ```
+5. Copy this token — this is your `TELEGRAM_BOT_TOKEN`
+
+#### 2. Get Your Chat ID
+
+**Option A — Personal chat (simplest)**
+
+1. Search for **@userinfobot** in Telegram
+2. Start a chat and send `/start`
+3. It will reply with your **user ID** (a number like `987654321`)
+4. Use that number as your `TELEGRAM_CHAT_ID`
+
+**Option B — Group or channel**
+
+1. Add your bot to the group/channel as an **admin**
+2. Send a message in that group/channel
+3. Open a browser and visit:
+   ```
+   https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates
+   ```
+4. Find `"chat":{"id":` in the response — the value is your `TELEGRAM_CHAT_ID`
+   - Group/channel IDs are negative numbers (e.g. `-100123456789`)
+
+#### 3. Set the values in `.env`
+
+```env
+TELEGRAM_BOT_TOKEN=123456789:AAFxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TELEGRAM_CHAT_ID=987654321
+```
+
+> The bot must be **started** (user sent `/start`) or **added as admin** to the target chat before it can send messages.
+
+---
+
 ### Step 5 — Run the Bot
 
 **Windows:**
