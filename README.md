@@ -35,26 +35,43 @@ Follow the full guide here:
 **Quickest option for Windows: XAMPP**
 
 1. Download XAMPP: https://www.apachefriends.org/index.html
-2. Install with **MySQL** and **PHP** enabled
-3. Open XAMPP Control Panel → Start **MySQL**
+2. Install with **Apache**, **MySQL**, and **PHP** enabled
+3. Open XAMPP Control Panel:
+   - Click **Start** next to **Apache** (Apache running = PHP is running)
+   - Click **Start** next to **MySQL**
+4. Optional — check **"Start with Windows"** (run on startup) for both Apache and MySQL
+
+> Apache running = PHP is active. No separate PHP install needed with XAMPP.
 
 ---
 
 ### Step 3 — Set Up the Web UI
 
-If you installed **XAMPP**, copy the web UI file into your XAMPP web root:
+After cloning or extracting the repository, you will have a `web/` folder inside the project:
+
+```
+mimic-clawbot/
+└── web/
+    └── index.php   ← this is the Web UI file
+```
+
+Copy `web/index.php` from the project folder into your XAMPP web root (`C:\xampp\htdocs\`):
 
 ```powershell
-# Windows (PowerShell)
-Copy-Item web\index.php C:\xampp\htdocs\mimic-clawbot\index.php
+# Windows (PowerShell) — run from inside the mimic-clawbot folder
+Copy-Item web\index.php C:\xampp\htdocs\web\index.php
 ```
 
 ```bash
-# Linux
-cp web/index.php /var/www/html/mimic-clawbot/index.php
+# Linux — run from inside the mimic-clawbot folder
+cp web/index.php /var/www/html/web/index.php
 ```
 
-Then open in browser: `http://localhost/mimic-clawbot/`
+Then test the Web UI in your browser:
+
+```
+http://localhost/web/index.php
+```
 
 ---
 
