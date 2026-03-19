@@ -150,6 +150,9 @@ The `.env` file also contains trading behavior parameters (e.g. buy/sell thresho
 #### 1. Create a Telegram Bot
 
 1. Open Telegram and search for **@BotFather**
+
+   > ⚠️ **Attention:** Send `/newbot` to **@BotFather**, not to any other bot or channel. Make sure you are chatting with **BotFather** before typing the command.
+
 2. Start a chat and send `/newbot`
 3. Follow the prompts:
    - Enter a **display name** (e.g. `My Trading Bot`)
@@ -165,6 +168,9 @@ The `.env` file also contains trading behavior parameters (e.g. buy/sell thresho
 **Option A — Personal chat (simplest)**
 
 1. Search for **@userinfobot** in Telegram
+
+   > ⚠️ **Attention:** Make sure the username is exactly **`@userinfobot`** — no extra words, numbers, or suffixes after it. There are fake/similar bots with slightly different names. The correct one ends exactly at `userinfobot`.
+
 2. Start a chat and send `/start`
 3. It will reply with your **user ID** (a number like `987654321`)
 4. Use that number as your `TELEGRAM_CHAT_ID`
