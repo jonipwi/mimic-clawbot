@@ -10,20 +10,30 @@ This folder contains deployable artifacts for Trading Bot v3.
 
 **Option A: Using Git CLI**
 
-If you have Git installed, clone the repository in PowerShell:
+If you have Git installed, open PowerShell and navigate to a folder you know (e.g. Desktop or Documents) **before** running `git clone`. The command will create a new `mimic-clawbot/` folder there.
 
 ```powershell
+# 1. Go to a folder you know
+cd C:\Users\YourName\Desktop
+
+# 2. Clone — this creates a mimic-clawbot folder in that location
 git clone https://github.com/jonipwi/mimic-clawbot.git
+
+# 3. Enter the folder
 cd mimic-clawbot
 ```
 
-**Option B: Download ZIP (No Git required)**
+> `git clone` saves the folder **wherever your terminal is currently at** when you run the command.
+> If unsure, navigate to Desktop or Documents first, then clone.
+
+**Option B: Manual Download ZIP (if git clone fails or Git is not installed)**
 
 1. Go to https://github.com/jonipwi/mimic-clawbot
 2. Click **Code** → **Download ZIP**
-3. Extract the ZIP to your preferred folder
+3. Extract the ZIP to a folder you know (e.g. Desktop)
+4. Open that extracted folder — it contains everything you need
 
-> Don't have Git? Download GitHub Desktop or Git CLI from https://git-scm.com/downloads
+> Don't have Git? Download Git CLI from https://git-scm.com/downloads or use GitHub Desktop.
 
 ---
 
