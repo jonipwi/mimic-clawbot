@@ -2,6 +2,98 @@
 
 This folder contains deployable artifacts for Trading Bot v3.
 
+---
+
+## 🚀 Step-by-Step Setup Installation
+
+### Step 1 — Get the Code
+
+**Option A: Using Git CLI**
+
+If you have Git installed, clone the repository in PowerShell:
+
+```powershell
+git clone https://github.com/jonipwi/mimic-clawbot.git
+cd mimic-clawbot
+```
+
+**Option B: Download ZIP (No Git required)**
+
+1. Go to https://github.com/jonipwi/mimic-clawbot
+2. Click **Code** → **Download ZIP**
+3. Extract the ZIP to your preferred folder
+
+> Don't have Git? Download GitHub Desktop or Git CLI from https://git-scm.com/downloads
+
+---
+
+### Step 2 — Install MySQL + PHP CLI
+
+Follow the full guide here:
+👉 [INSTALL.md](./INSTALL.md) — MySQL + PHP CLI Setup (Windows & Linux)
+
+**Quickest option for Windows: XAMPP**
+
+1. Download XAMPP: https://www.apachefriends.org/index.html
+2. Install with **MySQL** and **PHP** enabled
+3. Open XAMPP Control Panel → Start **MySQL**
+
+---
+
+### Step 3 — Set Up the Web UI
+
+If you installed **XAMPP**, copy the web UI file into your XAMPP web root:
+
+```powershell
+# Windows (PowerShell)
+Copy-Item web\index.php C:\xampp\htdocs\mimic-clawbot\index.php
+```
+
+```bash
+# Linux
+cp web/index.php /var/www/html/mimic-clawbot/index.php
+```
+
+Then open in browser: `http://localhost/mimic-clawbot/`
+
+---
+
+### Step 4 — Configure Environment
+
+```powershell
+# Windows
+Copy-Item .env.example .env
+```
+
+```bash
+# Linux
+cp .env.example .env
+```
+
+Edit `.env` and fill in your credentials:
+
+- `INDODAX_API_KEY` / `INDODAX_API_SECRET`
+- `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID`
+- `TRADING_DB_DSN` (MySQL connection string)
+
+---
+
+### Step 5 — Run the Bot
+
+**Windows:**
+
+```powershell
+.\trading-setup.ps1 -StartBot
+```
+
+**Linux / Raspberry Pi:**
+
+```bash
+./trading-setup.sh --start-bot
+```
+
+---
+
 ## Get the Repository
 
 ```bash
