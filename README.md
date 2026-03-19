@@ -2,6 +2,10 @@
 
 This folder contains deployable artifacts for Trading Bot v3.
 
+> 🔄 **Always run `git pull` before starting or re-running the bot** to make sure you have the latest version.
+> Updates may include bug fixes, new features, or changed configuration parameters.
+> If you downloaded a ZIP instead of using git, re-download from the repository to get the latest version.
+
 ---
 
 ## 🚀 Step-by-Step Setup Installation
@@ -198,6 +202,17 @@ TELEGRAM_CHAT_ID=987654321
 ---
 
 ### Step 5 — Run the Bot
+
+> 🔄 **Before running — check for updates first:**
+> ```powershell
+> # Windows (inside the mimic-clawbot folder)
+> git pull
+> ```
+> ```bash
+> # Linux
+> git pull
+> ```
+> Always pull the latest changes before starting. If the developer pushes an update, `git pull` will apply it immediately.
 
 **Windows:**
 
