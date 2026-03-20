@@ -107,6 +107,10 @@ fi
 stop_trading_stack
 
 mkdir -p "$SCRIPT_DIR/logs"
+touch \
+	"$SCRIPT_DIR/logs/web-ui.log" \
+	"$SCRIPT_DIR/logs/mimic-bridge.log" \
+	"$SCRIPT_DIR/logs/mimic-clawbot.log"
 
 echo "Starting Trading Web UI..."
 if command -v php >/dev/null 2>&1; then
