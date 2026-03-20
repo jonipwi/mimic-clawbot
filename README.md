@@ -374,6 +374,17 @@ in C:\xampp\htdocs\index.php on line 404
 
 **Fix — Set MySQL root password to `root` via XAMPP:**
 
+Quick fix (Windows, XAMPP) — run the helper script:
+
+```powershell
+# Run from the mimic-clawbot folder
+Unblock-File .\fix-mysql-xampp-root.ps1
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+./fix-mysql-xampp-root.ps1
+```
+
+If the quick fix doesn’t work or you prefer manual steps, follow below:
+
 1. Open **XAMPP Control Panel**
 2. Make sure **MySQL is running** (green status)
 3. Click **Shell** (or open a terminal and go to `C:\xampp\mysql\bin\`)
