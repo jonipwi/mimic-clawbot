@@ -1,3 +1,5 @@
+& "C:\xampp\mysql\bin\mysql.exe" -u root -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root'); SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('root'); SET PASSWORD FOR 'root'@'::1' = PASSWORD('root'); FLUSH PRIVILEGES;"
+
 # Path to XAMPP mysql.exe
 $mysqlExe = "C:\xampp\mysql\bin\mysql.exe"
 

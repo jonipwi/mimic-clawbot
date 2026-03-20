@@ -9,6 +9,19 @@ $ErrorActionPreference = 'Stop'
 
 Set-Location -Path $PSScriptRoot
 
+# Ensure logs directory and timestamped file paths
+$LogDir = Join-Path $PSScriptRoot 'logs'
+if (-not (Test-Path -Path $LogDir -PathType Container)) {
+    New-Item -ItemType Directory -Path $LogDir | Out-Null
+}
+$ts = Get-Date -Format 'yyyyMMdd-HHmmss'
+$WebUiOutLog = Join-Path $LogDir ("web-ui-$ts.out.log")
+$WebUiErrLog = Join-Path $LogDir ("web-ui-$ts.err.log")
+$BridgeOutLog = Join-Path $LogDir ("mimic-bridge-$ts.out.log")
+$BridgeErrLog = Join-Path $LogDir ("mimic-bridge-$ts.err.log")
+$BotOutLog = Join-Path $LogDir ("mimic-bot-$ts.out.log")
+$BotErrLog = Join-Path $LogDir ("mimic-bot-$ts.err.log")
+
 function Stop-TradingStack {
     param(
         [int[]]$Ports = @(8088, 8099)
@@ -43,18 +56,44 @@ if ($StopAll) {
 Stop-TradingStack
 
 Write-Host 'Starting Trading Web UI...'
-Start-Process -FilePath powershell.exe -ArgumentList '-NoProfile','-ExecutionPolicy','Bypass','-File',(Join-Path $PSScriptRoot 'start-web-ui.ps1') -WorkingDirectory $PSScriptRoot | Out-Null
+$webUiStartParams = @{
+    FilePath = 'powershell.exe'
+    ArgumentList = @('-NoProfile','-ExecutionPolicy','Bypass','-File',(Join-Path $PSScriptRoot 'start-web-ui.ps1'))
+    WorkingDirectory = $PSScriptRoot
+    RedirectStandardOutput = $WebUiOutLog
+    RedirectStandardError  = $WebUiErrLog
+}
+Start-Process @webUiStartParams | Out-Null
+Write-Host ("  Logs -> {0}" -f $WebUiOutLog)
+Write-Host ("          {0}" -f $WebUiErrLog)
 
 Write-Host 'Starting Mimic Bridge in background...'
-Start-Process -FilePath powershell.exe -ArgumentList '-NoProfile','-ExecutionPolicy','Bypass','-File',(Join-Path $PSScriptRoot 'start-mimic-bridge.ps1'),'-Token',$BridgeToken -WorkingDirectory $PSScriptRoot | Out-Null
+$bridgeStartParams = @{
+    FilePath = 'powershell.exe'
+    ArgumentList = @('-NoProfile','-ExecutionPolicy','Bypass','-File',(Join-Path $PSScriptRoot 'start-mimic-bridge.ps1'),'-Token',$BridgeToken)
+    WorkingDirectory = $PSScriptRoot
+    RedirectStandardOutput = $BridgeOutLog
+    RedirectStandardError  = $BridgeErrLog
+}
+Start-Process @bridgeStartParams | Out-Null
 
 Write-Host 'Mimic Bridge started.'
 Write-Host 'Health check: http://127.0.0.1:8099/healthz'
+Write-Host ("  Logs -> {0}" -f $BridgeOutLog)
+Write-Host ("          {0}" -f $BridgeErrLog)
 
 if ($StartBot) {
     Write-Host 'Starting Mimic Bot in background...'
-    Start-Process -FilePath (Join-Path $PSScriptRoot 'mimic-clawbot.exe') -WorkingDirectory $PSScriptRoot | Out-Null
+    $botStartParams = @{
+        FilePath = (Join-Path $PSScriptRoot 'mimic-clawbot.exe')
+        WorkingDirectory = $PSScriptRoot
+        RedirectStandardOutput = $BotOutLog
+        RedirectStandardError  = $BotErrLog
+    }
+    Start-Process @botStartParams | Out-Null
     Write-Host 'Mimic Bot started.'
+    Write-Host ("  Logs -> {0}" -f $BotOutLog)
+    Write-Host ("          {0}" -f $BotErrLog)
 }
 else {
     Write-Host 'Run Mimic Bot manually: .\mimic-clawbot.exe'

@@ -383,6 +383,12 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ./fix-mysql-xampp-root.ps1
 ```
 
+If the script fails to set the root password, run this one‑liner in PowerShell:
+
+```powershell
+& "C:\xampp\mysql\bin\mysql.exe" -u root -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root'); SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('root'); SET PASSWORD FOR 'root'@'::1' = PASSWORD('root'); FLUSH PRIVILEGES;"
+```
+
 If the quick fix doesn’t work or you prefer manual steps, follow below:
 
 1. Open **XAMPP Control Panel**
