@@ -147,6 +147,17 @@ The `.env` file also contains trading behavior parameters (e.g. buy/sell thresho
 
 > Tip: You can always come back and tune the values after observing the bot's behavior in paper trading mode (`LIVE_TRADING_ENABLED=false`).
 
+### 📋 Available Trading Modes
+
+The bot supports pre-configured trading modes that can be switched dynamically via Telegram commands:
+
+• *aggressive* - High-risk: larger trades, wider stops, higher daily limits  
+• *balanced* - Moderate: balanced risk/reward, standard parameters  
+• *conservative* - Very conservative: minimal risk, slow growth strategy  
+• *safe* - Conservative: lower trade size, tight stops, lower daily limits  
+
+Use: `/mode <mode>` to switch, `/mode status` to see current, `/mode confirm` to apply
+
 ---
 
 ### Step 4a — Set Up Telegram Bot Token & Channel
